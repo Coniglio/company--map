@@ -26,12 +26,12 @@ func selectToLanguages(tx *gorp.Transaction) ([]Language, error) {
 	var languages []Language
 	_, err := tx.Select(&languages, `
 		select
-		  lan.id language_id,
-		  lan.language_name
+		  id language_id,
+		  language_name
 		from
-		  languages lan
+		  languages
 		order by
-		  lan.id
+		  id
 		`)
 	if err != nil {
 		return languages, err
