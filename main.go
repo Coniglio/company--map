@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/Coniglio/company-map/route"
+	"github.com/Coniglio/company-map/router"
 )
 
 func main() {
-	e := route.Init()
+	e := router.Init()
 	e.Logger.Fatal(e.Start(":80"))
 }
