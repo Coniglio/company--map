@@ -22,6 +22,7 @@ func GetLanguages(tx *gorp.Transaction) ([]Language, error) {
 	return languages, nil
 }
 
+// selectToLanguages 言語情報を検索します
 func selectToLanguages(tx *gorp.Transaction) ([]Language, error) {
 	var languages []Language
 	_, err := tx.Select(&languages, `
