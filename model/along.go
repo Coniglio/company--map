@@ -4,8 +4,8 @@ import "gopkg.in/gorp.v1"
 
 // Along 沿線情報
 type Along struct {
-	ID   int    `db:"along_id"`
-	Name string `db:"along_name"`
+	ID   int    `db:"along_id" json:"id"`
+	Name string `db:"along_name" json:"name"`
 }
 
 // GetAlongs 沿線情報を取得します
