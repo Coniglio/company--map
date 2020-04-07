@@ -12,7 +12,7 @@ type CompanyMap struct {
 		Lat  float32 `json:"lat"`
 		Lang float32 `json:"lang"`
 	} `json:"latlng"`
-	Languages []Language `json:"language"`
+	Languages []Language `json:"languages"`
 	Alongs    []Along    `json:"alongs"`
 }
 
