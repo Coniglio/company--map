@@ -58,8 +58,6 @@ func GetCompanyMaps(tx *gorp.Transaction) ([]CompanyMap, error) {
 		}
 	}
 
-	print(c)
-
 	// 検索結果の沿線情報をまとめる
 	var alongs = make(map[int][]Along)
 	for _, c := range companies {
