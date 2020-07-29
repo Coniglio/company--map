@@ -14,6 +14,7 @@ type CompanyMap struct {
 	} `json:"latlng"`
 	Languages []Language `json:"languages"`
 	Alongs    []Along    `json:"alongs"`
+	GenerousWelfares []GenerousWelfare `json:"GenerousWelfares"`
 }
 
 // Company 企業情報
@@ -26,6 +27,7 @@ type Company struct {
 	LanguageName string  `db:"language_name"`
 	AlongID      int     `db:"along_id"`
 	AlongName    string  `db:"along_name"`
+	GenerousWelfareID int `db:"generous_welfare_id"`
 }
 
 // GetCompanyMaps 企業マップを検索します
@@ -77,6 +79,25 @@ func GetCompanyMaps(tx *gorp.Transaction) ([]CompanyMap, error) {
 		}
 	}
 
+	// 検索結果の福利厚生情報をまとめる
+	var generousWelfares = make(map[int][GenerousWelfare])
+	for _, c := range companies {
+		if _, ok := generousWelfares[c.CompanyID]; ok {
+			isContain := false
+			for _, generousWelfare := range generousWelfares[c.CompanyID] {
+				if c.GenerousWelfareID == generousWelfare.ID {
+					isContain = true
+					break
+				}
+			}
+			if !isContain {
+				generousWelfares[c.CompanyID] = append(generousWelfares[c.CompanyID], GenerousWelfare{ID: c.GenerousWelfareID})
+			}
+		} else {
+			generousWelfares[c.CompanyID] = []GenerousWelfare{GenerousWelfare{ID: c.GenerousWelfareID}}
+		}
+	}
+
 	// クライアントへの返却用に整形
 	var companyMaps = make(map[int]CompanyMap)
 	for _, c := range companies {
@@ -92,6 +113,7 @@ func GetCompanyMaps(tx *gorp.Transaction) ([]CompanyMap, error) {
 				},
 				Languages: languages[c.CompanyID],
 				Alongs:    alongs[c.CompanyID],
+				GenerousWelfares: generousWelfares[c.CompanyID],
 			}
 		}
 
@@ -105,7 +127,9 @@ func GetCompanyMaps(tx *gorp.Transaction) ([]CompanyMap, error) {
 	return result, nil
 }
 
+// 企業マップ情報を検索します
 func selectToCompanyMap(tx *gorp.Transaction) ([]Company, error) {
+	// TODO: 一回で取得するか、分割して取得してからマージ！？ 企業名とか緯度経度とか重複して大量のレコードが取得される
 	var companies []Company
 	_, err := tx.Select(&companies, `
 		select
@@ -116,7 +140,8 @@ func selectToCompanyMap(tx *gorp.Transaction) ([]Company, error) {
 		  lan.id language_id,
 		  lan.language_name,
 		  alg.id along_id,
-		  alg.name along_name
+		  alg.name along_name,
+		  cbf.generous_welfare_id
 		from
 		  companies com
 		  inner join locations loc on com.id = loc.companies_id
@@ -124,6 +149,7 @@ func selectToCompanyMap(tx *gorp.Transaction) ([]Company, error) {
 		  inner join languages lan on tec.language_id = lan.id
 		  inner join commuting cmu on com.id = cmu.company_id
 		  inner join alongs alg on cmu.along_id = alg.id
+		  left join company_benefits cbf on com.id = cbf.company_id
 		order by
 		  com.id
 		`)

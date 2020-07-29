@@ -34,6 +34,7 @@ func Init() *echo.Echo {
 		v1.GET("/companymaps", api.GetCompanyMaps())
 		v1.GET("/languages", api.GetLanguages())
 		v1.GET("/alongs", api.GetAlongs())
+		v1.GET("/generousWelfares", api.GetGenerousWelfares())
 	}
 
 	return e
