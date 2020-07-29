@@ -80,7 +80,7 @@ func GetCompanyMaps(tx *gorp.Transaction) ([]CompanyMap, error) {
 	}
 
 	// 検索結果の福利厚生情報をまとめる
-	var generousWelfares = make(map[int][GenerousWelfare])
+	var generousWelfares = make(map[int][]GenerousWelfare)
 	for _, c := range companies {
 		if _, ok := generousWelfares[c.CompanyID]; ok {
 			isContain := false
