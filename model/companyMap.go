@@ -27,7 +27,7 @@ type Company struct {
 	LanguageName string  `db:"language_name"`
 	AlongID      int     `db:"along_id"`
 	AlongName    string  `db:"along_name"`
-	GenerousWelfareID int `db:"generous_welfare_id"`
+	GenerousWelfareID sql.NullInt64 `db:"generous_welfare_id"`
 }
 
 // GetCompanyMaps 企業マップを検索します
