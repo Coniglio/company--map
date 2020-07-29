@@ -8,8 +8,8 @@ import (
 	"gopkg.in/gorp.v1"
 )
 
-// GetGenerousWelfare福利厚生情報を返します
-func GetGenerousWelfare() echo.HandlerFunc {
+// GetGenerousWelfares 福利厚生情報を返します
+func GetGenerousWelfares() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		tx := c.Get("Tx").(*gorp.Transaction)
 
