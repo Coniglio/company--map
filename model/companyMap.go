@@ -88,7 +88,7 @@ func GetCompanyMaps(tx *gorp.Transaction) ([]CompanyMap, error) {
 
 		// 福利厚生が存在しない場合、次の企業をチェック
 		if c.GenerousWelfareID.Valid {
-			generousWelfareID = c.GenerousWelfareID.Int64;
+			generousWelfareID = int(c.GenerousWelfareID.Int64);
 		} else {
 			continue;
 		}
