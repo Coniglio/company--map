@@ -84,6 +84,12 @@ func GetCompanyMaps(tx *gorp.Transaction) ([]CompanyMap, error) {
 	var generousWelfares = make(map[int][]GenerousWelfare)
 	for _, c := range companies {
 		if _, ok := generousWelfares[c.CompanyID]; ok {
+
+			// 福利厚生が存在しない場合、次の企業をチェック
+			if c.GenerousWelfareID == NullInt64 {
+				continue;
+			}
+
 			isContain := false
 			for _, generousWelfare := range generousWelfares[c.CompanyID] {
 				if c.GenerousWelfareID == generousWelfare.ID {
