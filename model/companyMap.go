@@ -84,8 +84,12 @@ func GetCompanyMaps(tx *gorp.Transaction) ([]CompanyMap, error) {
 	var generousWelfares = make(map[int][]GenerousWelfare)
 	for _, c := range companies {
 
+		var generousWelfareID int
+
 		// 福利厚生が存在しない場合、次の企業をチェック
-		if !c.GenerousWelfareID.Valid {
+		if c.GenerousWelfareID.Valid {
+			generousWelfareID = c.GenerousWelfareID.Int64;
+		} else {
 			continue;
 		}
 
@@ -93,16 +97,16 @@ func GetCompanyMaps(tx *gorp.Transaction) ([]CompanyMap, error) {
 
 			isContain := false
 			for _, generousWelfare := range generousWelfares[c.CompanyID] {
-				if c.GenerousWelfareID == generousWelfare.ID {
+				if generousWelfareID == generousWelfare.ID {
 					isContain = true
 					break
 				}
 			}
 			if !isContain {
-				generousWelfares[c.CompanyID] = append(generousWelfares[c.CompanyID], GenerousWelfare{ID: c.GenerousWelfareID})
+				generousWelfares[c.CompanyID] = append(generousWelfares[c.CompanyID], GenerousWelfare{ID: generousWelfareID})
 			}
 		} else {
-			generousWelfares[c.CompanyID] = []GenerousWelfare{GenerousWelfare{ID: c.GenerousWelfareID}}
+			generousWelfares[c.CompanyID] = []GenerousWelfare{GenerousWelfare{ID: generousWelfareID}}
 		}
 	}
 
