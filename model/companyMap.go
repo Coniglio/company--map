@@ -114,9 +114,9 @@ func GetCompanyMaps(tx *gorp.Transaction) ([]CompanyMap, error) {
 	var companyMaps = make(map[int]CompanyMap)
 	for _, c := range companies {
 		if _, ok := companyMaps[c.CompanyID]; !ok {
-			generousWelfare := generousWelfares[c.CompanyID]
-			if generousWelfare == nil {
-				generousWelfare = map[int]GenerousWelfare{}
+			var generousWelfare [int][]GenerousWelfare
+			if generousWelfares[c.CompanyID] != nil {
+				generousWelfare = generousWelfares[c.CompanyID]
 			}
 			companyMaps[c.CompanyID] = CompanyMap{
 				Name: c.CompanyName,
