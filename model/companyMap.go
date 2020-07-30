@@ -114,10 +114,13 @@ func GetCompanyMaps(tx *gorp.Transaction) ([]CompanyMap, error) {
 	var companyMaps = make(map[int]CompanyMap)
 	for _, c := range companies {
 		if _, ok := companyMaps[c.CompanyID]; !ok {
+
+			// 福利厚生が存在しない場合、空の配列を返却する
 			var generousWelfare = []GenerousWelfare{}
 			if generousWelfares[c.CompanyID] != nil {
 				generousWelfare = generousWelfares[c.CompanyID]
 			}
+
 			companyMaps[c.CompanyID] = CompanyMap{
 				Name: c.CompanyName,
 				Latlng: struct {
