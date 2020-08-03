@@ -15,7 +15,7 @@ type CompanyMap struct {
 	} `json:"latlng"`
 	Languages []Language `json:"languages"`
 	Alongs    []Along    `json:"alongs"`
-	GenerousWelfares []GenerousWelfare `json:"GenerousWelfares"`
+	GenerousWelfares []GenerousWelfare `json:"generousWelfares"`
 }
 
 // Company 企業情報
