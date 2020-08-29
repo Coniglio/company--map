@@ -1,6 +1,7 @@
 package router
 
 import (
+	"os"
 	"github.com/Coniglio/company-map/api"
 	"github.com/Coniglio/company-map/db"
 	"github.com/Coniglio/company-map/handler"
@@ -13,7 +14,15 @@ import (
 func Init() *echo.Echo {
 	e := echo.New()
 
+	fp, err := os.OpenFile("/var/log/echo.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		panic(err)
+	}
 	e.Use(middleware.Logger())
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Output: fp,
+	}))
+
 	e.Use(middleware.Recover())
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"*"},
