@@ -8,6 +8,7 @@ import (
 
 // CompanyMap 企業マップ情報
 type CompanyMap struct {
+	ID int `json:"id"`
 	Name   string `json:"name"`
 	Latlng struct {
 		Lat  float32 `json:"lat"`
@@ -122,6 +123,7 @@ func GetCompanyMaps(tx *gorp.Transaction) ([]CompanyMap, error) {
 			}
 
 			companyMaps[c.CompanyID] = CompanyMap{
+				ID: c.CompanyID,
 				Name: c.CompanyName,
 				Latlng: struct {
 					Lat  float32 `json:"lat"`
@@ -135,7 +137,6 @@ func GetCompanyMaps(tx *gorp.Transaction) ([]CompanyMap, error) {
 				GenerousWelfares: generousWelfare,
 			}
 		}
-
 	}
 
 	// TODO map→sliceの変換はそのうち、見直す
