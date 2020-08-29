@@ -31,10 +31,11 @@ func Init() *echo.Echo {
 
 	v1 := e.Group("/api/v1")
 	{
-		v1.GET("/companymaps", api.GetCompanyMaps())
-		v1.GET("/languages", api.GetLanguages())
-		v1.GET("/alongs", api.GetAlongs())
-		v1.GET("/generousWelfares", api.GetGenerousWelfares())
+		v1.GET("/companymaps", api.GetCompanyMaps)
+		v1.GET("/languages", api.GetLanguages)
+		v1.GET("/alongs", api.GetAlongs)
+		v1.GET("/generousWelfares", api.GetGenerousWelfares)
+		v1.GET("/displays", api.GetDisplayCompanies)
 	}
 
 	return e
